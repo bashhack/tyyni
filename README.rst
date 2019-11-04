@@ -25,7 +25,7 @@ If using Honcho to orchestrate processes, simply run:
 
 or execute the following from the command-line:
 
-.. code:: python
+.. code:: bash
 
     ptw --runner "pytest --testmon"
 

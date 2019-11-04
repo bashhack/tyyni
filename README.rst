@@ -1,11 +1,31 @@
-# Tyyni
----
+=====
+Tyyni
+=====
 
-# Dev Workflow
+----------------------------------
+*Tyyni (adj. calm, serene, stoic)*
+----------------------------------
 
-## Testing
 
-A TDD flow is encouraged, and to faciliate this `pytest` is used alongside the following plugins: `pytest-watch`, `pytest-testmon`, `pytest-cov` and `pytest-sugar`.
+Dev Workflow
+============
 
-If using Honcho to orchestrate processes, simply run: `honcho start -f Procfile.dev` or execute `ptw --runner "pytest --testmon"` directly from the command-line.
+A TDD workflow is encouraged and to faciliate this methodology, this project uses `pytest` with the following plugins:
+
+- ``pytest-watch``
+- ``pytest-testmon``
+- ``pytest-cov``
+- ``pytest-sugar``
+
+If using Honcho to orchestrate processes, simply run:
+
+.. code:: bash
+
+    honcho start -f Procfile.dev
+
+or execute the following from the command-line:
+
+.. code:: python
+
+    ptw --runner "pytest --testmon"
 

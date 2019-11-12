@@ -29,3 +29,13 @@ or execute the following from the command-line:
 
     ptw --runner "pytest --testmon"
 
+
+Interact With Telegram Bot
+==========================
+
+.. code:: python
+
+    >>> import telegram
+    >>> bot = telegram.Bot(token='TELEGRAM_API_TOKEN')
+    >>> print(bot.get_me())
+    {'id': 12345, 'first_name': 'bot_name', 'is_bot': True, 'username': 'bot_username'}

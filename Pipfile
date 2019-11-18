@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 ipython = "*"
 honcho = "*"
+python-dotenv = "*"
 
 [dev-packages]
 pytest = "*"

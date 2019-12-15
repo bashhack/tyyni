@@ -29,3 +29,14 @@ or execute the following from the command-line:
 
     ptw --runner "pytest --testmon"
 
+Services
+========
+
+- Traefik (reverse-proxy/load-balancer)
+- PostgreSQL (data store)
+
+`exec psql -d POSTGRES_DB -U POSTGRES_USER`
+[Traefik v1.7 Docker Configuration](https://docs.traefik.io/v1.7/configuration/backends/docker/)
+
+TODO:
+- Migrate to v2: https://docs.traefik.io/migration/v1-to-v2/

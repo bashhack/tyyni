@@ -46,11 +46,13 @@ If running `pipenv install --dev` presents any issue with the `ujson` dev depend
 
 
 Access PostgreSQL during initial development:
+
 .. code:: bash
 
     exec psql -d POSTGRES_DB -U POSTGRES_USER
 
 Dev TODOS:
+
 - `Migrate to v2 <https://docs.traefik.io/migration/v1-to-v2/>`_
 
 Resources:

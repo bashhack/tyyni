@@ -29,3 +29,8 @@ or execute the following from the command-line:
 
     ptw --runner "pytest --testmon"
 
+Services
+========
+
+- Traefik (reverse-proxy/load-balancer)
+- PostgreSQL (data store)

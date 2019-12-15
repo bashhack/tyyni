@@ -1,0 +1,11 @@
+version: '3'
+services:
+  proxy:
+    labels:
+      - traefik.enable=true
+      - traefik.port=80
+  backend:
+    labels:
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.tags=${TRAEFIK_TAG}

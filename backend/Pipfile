@@ -1,0 +1,32 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+[dev-packages]
+pytest = "*"
+pytest-testmon = "==0.9.19"
+pytest-watch = "*"
+pytest-sugar = "*"
+pytest-cov = "*"
+black = "==19.3b0"
+pudb = "*"
+bandit = "*"
+honcho = "*"
+autoflake = "*"
+epc = "*"
+flake8 = "*"
+importmagic = "*"
+pyls-mypy = "*"
+pycodestyle = "*"
+pre-commit = "*"
+python-language-server = {extras = [ "all",],version = "*"}
+vulture = "*"
+
+[requires]
+python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

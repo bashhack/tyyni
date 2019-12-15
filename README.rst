@@ -35,8 +35,26 @@ Services
 - Traefik (reverse-proxy/load-balancer)
 - PostgreSQL (data store)
 
-`exec psql -d POSTGRES_DB -U POSTGRES_USER`
-[Traefik v1.7 Docker Configuration](https://docs.traefik.io/v1.7/configuration/backends/docker/)
 
-TODO:
-- Migrate to v2: https://docs.traefik.io/migration/v1-to-v2/
+
+NOTE:
+If running `pipenv install --dev` presents any issue with the `ujson` dev dependency from FastAPI (ex. missing Python source headers), the resolution is likely installing the `python3-dev` package on the local host (NOT remote Docker host).
+
+.. code:: bash
+
+    apt-get install python3-dev
+
+
+Access PostgreSQL during initial development:
+
+.. code:: bash
+
+    exec psql -d POSTGRES_DB -U POSTGRES_USER
+
+Dev TODOS:
+
+- `Migrate to v2 <https://docs.traefik.io/migration/v1-to-v2/>`_
+
+Resources:
+
+`Traefik v1.7 Docker Configuration <https://docs.traefik.io/v1.7/configuration/backends/docker/>`_

@@ -58,3 +58,5 @@ Dev TODOS:
 Resources:
 
 `Traefik v1.7 Docker Configuration <https://docs.traefik.io/v1.7/configuration/backends/docker/>`_
+
+`pgadmin4 <https://www.pgadmin.org/>`_

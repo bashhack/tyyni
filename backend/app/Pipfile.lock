@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "dfc68ab0e27d2a2bf90f3e0a5f034b6febd763f7348600688a570aa2aa2896d4"
+            "sha256": "b13aad8ba16d5f9fe22fd2dd4f063e64c96b8c8edce0b869e2d9ce0da370e76f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,13 @@
         ]
     },
     "default": {
+        "alembic": {
+            "hashes": [
+                "sha256:49277bb7242192bbb9eac58fed4fe02ec6c3a2a4b4345d2171197459266482b2"
+            ],
+            "index": "pypi",
+            "version": "==1.3.1"
+        },
         "attrs": {
             "hashes": [
                 "sha256:08a96c641c3a74e44eb59afb61a24f2cb9f4d7188748e76ba4bb5edfa3cb7d1c",
@@ -152,6 +159,12 @@
                 "sha256:cc15f2a9850899d108a3c22743a86edcd3b42791a6c88b6e5b558d021d14d065"
             ],
             "version": "==0.1.0"
+        },
+        "mako": {
+            "hashes": [
+                "sha256:a36919599a9b7dc5d86a7a8988f23a9a3a3d083070023bab23d64f7f1d1e0a4b"
+            ],
+            "version": "==1.1.0"
         },
         "markupsafe": {
             "hashes": [
@@ -298,6 +311,14 @@
             "index": "pypi",
             "version": "==3.3"
         },
+        "python-editor": {
+            "hashes": [
+                "sha256:1bf6e860a8ad52a14c3ee1252d5dc25b2030618ed80c022598f00176adc8367d",
+                "sha256:51fda6bcc5ddbbb7063b2af7509e43bd84bfc32a4ff71349ec7847713882327b",
+                "sha256:5f98b069316ea1c2ed3f67e7f5df6c0d8f10b689964a4a811ff64f0106819ec8"
+            ],
+            "version": "==1.0.4"
+        },
         "pyzmq": {
             "hashes": [
                 "sha256:01b588911714a6696283de3904f564c550c9e12e8b4995e173f1011755e01086",
@@ -351,6 +372,13 @@
                 "sha256:30f610279e8b2578cab6db20741130331735c781b56053c59c4076da27f06b66"
             ],
             "version": "==1.13.0"
+        },
+        "sqlalchemy": {
+            "hashes": [
+                "sha256:afa5541e9dea8ad0014251bc9d56171ca3d8b130c9627c6cb3681cff30be3f8a"
+            ],
+            "index": "pypi",
+            "version": "==1.3.11"
         },
         "terminado": {
             "hashes": [

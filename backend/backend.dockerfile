@@ -1,8 +1,8 @@
 FROM bashhack/uvicorn-gunicorn-fastapi
 
 # Install Python dependencies
-COPY ./Pipfile Pipfile
-COPY ./Pipfile.lock Pipfile.lock
+COPY app/Pipfile Pipfile
+COPY app/Pipfile.lock Pipfile.lock
 RUN pipenv install --deploy --system --dev
 
 # Expose for Jupyter
@@ -12,7 +12,7 @@ RUN pipenv install --deploy --system --dev
 #   $ $JUPYTER
 
 ARG env=prod
-RUN bash -c "if [ $env == 'dev' ] ; then pip install jupyterlab ; fi"
+RUN bash -c "if [ $env == 'dev' ] ; then pip install jupyterlab==1.2.4 ; fi"
 EXPOSE 8888
 
 COPY ./app /app

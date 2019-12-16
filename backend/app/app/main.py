@@ -1,12 +1,8 @@
 import sys
 
+from app.core import config
 from fastapi import FastAPI
 
 version = f"{sys.version_info.major}.{sys.version_info.minor}"
 
-app = FastAPI()
-
-@app.get("/")
-async def read_root():
-    message = f"Hello world! From FastAPI running on Uvicorn with Gunicorn in tyyni. Using Python {version}"
-    return {"message": message}
+app = FastAPI(title=config.PROJECT_NAME, openapi_url=config.OPENAPI_URL)

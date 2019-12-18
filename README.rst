@@ -36,6 +36,24 @@ Services
 - PostgreSQL (data store)
 
 
+TASKS
+=====
+
+Creating migrations is handled via Alembic. To create a new migration, we leverage
+our mounted Docker volume (see: `docker-compose.dev.volumes.yml`) so that imports are resolved
+as expected:
+
+.. code:: bash
+
+    docker-compose exec backend bash
+
+Once in the shell, run:
+
+.. code:: bash
+
+    alembic --autogenerate -m "Name of revision"
+
+
 
 NOTE:
 If running `pipenv install --dev` presents any issue with the `ujson` dev dependency from FastAPI (ex. missing Python source headers), the resolution is likely installing the `python3-dev` package on the local host (NOT remote Docker host).
@@ -60,3 +78,5 @@ Resources:
 `Traefik v1.7 Docker Configuration <https://docs.traefik.io/v1.7/configuration/backends/docker/>`_
 
 `pgadmin4 <https://www.pgadmin.org/>`_
+
+`Why use volumes for better development? See: dev.volumes.yml <https://nickjanetakis.com/blog/docker-tip-12-a-much-better-development-experience-with-volumes>`

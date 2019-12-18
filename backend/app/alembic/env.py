@@ -1,9 +1,11 @@
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from alembic import context
+from app.core.config import SQLALCHEMY_DATABASE_URI
+from app.db.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -17,12 +19,35 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+# To better support 12-Factor app principles, rather than
+# hardcode a DB uri here, we'll follow the Alembic docs' advice:
+#
+#   sqlalchemy.url - A URL to connect to the database via SQLAlchemy. 
+#   This configuration value is only used if the env.py file calls upon them; 
+#   in the “generic” template, the call to config.get_main_option("sqlalchemy.url") 
+#   in the run_migrations_offline() function and the call to engine_from_
+#   config(prefix="sqlalchemy.") in the run_migrations_online() function are 
+#   where this key is referenced. If the SQLAlchemy URL should come from 
+#   some other source, such as from environment variables or a global registry, 
+#   or if the migration environment makes use of multiple database URLs,
+#   the developer is encouraged to alter the env.py file to use whatever
+#   methods are appropriate in order to acquire the database URL or URLs.
+#
+#   Source: https://alembic.sqlalchemy.org/en/latest/tutorial.html
+
+# There's a decent example here:
+# https://allan-simon.github.io/blog/posts/python-alembic-with-environment-variables/
+
+
+def get_url():
+    return SQLALCHEMY_DATABASE_URI
 
 
 def run_migrations_offline():
@@ -37,7 +62,8 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    
+    url = get_url()  # using this in favor of: config.get_main_option("sqlalchemy.url") from the *.ini
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -56,8 +82,11 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
+    
+    configuration = config.get_section(config.config_ini_section)
+    configuration['sqlalchemy.url'] = get_url()
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
+        configuration,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

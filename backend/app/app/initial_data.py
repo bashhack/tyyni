@@ -12,10 +12,10 @@ def init():
 
 
 def main():
-    logger.info('Seeding initial data...')
+    logger.info("Seeding initial data...")
     init()
-    logger.info('...seed data created') 
-    
+    logger.info("...seed data created")
+
 
 if __name__ == "__main__":
     main()

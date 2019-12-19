@@ -16,3 +16,8 @@ class UserBaseInDB(UserBase):
 
 class User(UserBaseInDB):
     pass
+
+
+class UserCreate(UserBaseInDB):
+    email: str
+    password: str

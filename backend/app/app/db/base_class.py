@@ -12,8 +12,8 @@ class CustomBase(object):
     #
     # To have a simpler, less verbose interface - this
     # custom base class will allow us to
-    # generate __tablename__ automatically 
-    
+    # generate __tablename__ automatically
+
     @declared_attr
     def __tablename__(cls):
         return cls.__name__.lower()

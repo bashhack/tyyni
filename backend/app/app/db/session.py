@@ -15,10 +15,10 @@ db_session = scoped_session(
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-# NOTE: 
-#       `This pattern allows disparate sections of the application to call 
-#       upon a global scoped_session, so that all those areas may share the 
+# NOTE:
+#       `This pattern allows disparate sections of the application to call
+#       upon a global scoped_session, so that all those areas may share the
 #       same session without the need to pass it explicitly.`
-# 
+#
 # For more on this pattern and the usages here, see:
 # https://docs.sqlalchemy.org/en/13/orm/contextual.html

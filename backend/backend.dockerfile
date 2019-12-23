@@ -18,4 +18,6 @@ EXPOSE 8888
 COPY ./app /app
 WORKDIR /app/
 
+ENV PYTHONPATH=/app
+
 EXPOSE 80

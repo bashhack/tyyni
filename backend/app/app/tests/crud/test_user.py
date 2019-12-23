@@ -27,6 +27,8 @@ def test_create_user(user_setup):
     user_in = UserCreate(email=email, password=password)
     user = crud.user.create_user(db_session, user_in=user_in)
     assert isinstance(user, User)
+    assert user.email == email
+    assert user.hashed_password == password
 
 
 def test_get_users(create_user):

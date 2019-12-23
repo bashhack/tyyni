@@ -6,3 +6,9 @@ services:
       dockerfile: backend.dockerfile
       args:
         env: dev
+  backend-tests:
+    build:
+      context: ./backend
+      dockerfile: tests.dockerfile
+      args:
+        env: dev

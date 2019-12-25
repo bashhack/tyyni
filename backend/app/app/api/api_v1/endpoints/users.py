@@ -1,13 +1,13 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException
-from fastapi.params import Depends
 from sqlalchemy.orm import Session
-from starlette.status import HTTP_400_BAD_REQUEST
 
 from app import crud
 from app.api.utils.db import get_db
 from app.models.user import User, UserCreate
+from fastapi import APIRouter, HTTPException
+from fastapi.params import Depends
+from starlette.status import HTTP_400_BAD_REQUEST
 
 router = APIRouter()
 

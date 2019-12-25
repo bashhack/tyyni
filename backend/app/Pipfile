@@ -30,6 +30,7 @@ pycodestyle = "*"
 pre-commit = "*"
 python-language-server = {extras = [ "all",],version = "*"}
 vulture = "*"
+sqlalchemy-utils = "*"
 
 [requires]
 python_version = "3.7"

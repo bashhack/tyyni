@@ -4,7 +4,7 @@ from app import crud
 from app.core.config import API_V1_STR
 from app.db.session import db_session
 from app.models.user import UserCreate
-from app.tests.utils.utils import random_lower_string, get_server_api
+from app.tests.utils.utils import get_server_api, random_lower_string
 
 
 @pytest.fixture

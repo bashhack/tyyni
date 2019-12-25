@@ -1,18 +1,17 @@
 import os
 
 import pytest
+from sqlalchemy import create_engine
+from sqlalchemy_utils import create_database, database_exists, drop_database
+
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import create_engine
-from sqlalchemy_utils import database_exists, create_database, drop_database
-from starlette.testclient import TestClient
-
+from app.core.config import SQLALCHEMY_DATABASE_URI
 from app.main import app
+from starlette.testclient import TestClient
 
 # IMPORTANT: Need to set this before attempting to import the DB URI!!!
 os.environ["TESTING"] = "True"
-
-from app.core.config import SQLALCHEMY_DATABASE_URI
 
 
 @pytest.fixture(scope="session", autouse=True)

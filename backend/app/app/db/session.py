@@ -12,7 +12,7 @@ db_session = scoped_session(
 )
 
 # Create a session factory instance (for use in executing model queries, etc.)
-Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 # NOTE:

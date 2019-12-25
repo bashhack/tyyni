@@ -1,4 +1,4 @@
-from app.db.session import Session
+from app.db.session import SessionLocal
 
 
 def get_db():
@@ -17,7 +17,7 @@ def get_db():
      - The code following the yield statement is executed after the response has been delivered.
     """
 
-    db = Session()
+    db = SessionLocal()
     try:
         yield db
     finally:

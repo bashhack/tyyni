@@ -29,6 +29,12 @@ or execute the following from the command-line:
 
     ptw --runner "pytest --testmon"
 
+These commands can be run with the following command:
+
+.. code:: bash
+
+    docker-compose exec backend-tests /tests-start.sh
+
 Services
 ========
 
@@ -79,4 +85,6 @@ Resources:
 
 `pgadmin4 <https://www.pgadmin.org/>`_
 
-`Why use volumes for better development? See: dev.volumes.yml <https://nickjanetakis.com/blog/docker-tip-12-a-much-better-development-experience-with-volumes>`
+`Why use volumes for better development? See: dev.volumes.yml <https://nickjanetakis.com/blog/docker-tip-12-a-much-better-development-experience-with-volumes>`_
+
+

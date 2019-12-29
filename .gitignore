@@ -50,9 +50,6 @@ docs/_build/
 profile_default/
 ipython_config.py
 
-# pyenv
-.python-version
-
 # mypy
 .mypy_cache/
 .dmypy.json

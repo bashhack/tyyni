@@ -42,3 +42,9 @@ def test_get_user_by_email(create_user):
     user = create_user
     user_from_db = crud.user.get_user_by_email(db_session, user_email=user.email)
     assert user == user_from_db
+
+
+def test_get_user_by_id(create_user):
+    user = create_user
+    user_from_db = crud.user.get_user_by_id(db_session, user_id=user.id)
+    assert user == user_from_db

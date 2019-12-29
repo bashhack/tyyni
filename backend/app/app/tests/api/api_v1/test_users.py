@@ -1,4 +1,5 @@
 import pytest
+from starlette.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 
 from app import crud
 from app.core.config import API_V1_STR
@@ -38,6 +39,30 @@ def test_get_users(client, create_user):
 
     users_from_req = response.json()
 
+    assert response.status_code == HTTP_200_OK
+
     assert len(users_from_req) > 1
     for user in users_from_req:
         assert "email" in user
+
+
+@pytest.mark.parametrize("status_code", [(HTTP_200_OK,), (HTTP_404_NOT_FOUND,)])
+def test_get_user(client, create_user, status_code):
+    server_api = get_server_api()
+    user = create_user()
+
+    if status_code == HTTP_200_OK:
+        user_id = user.id
+    else:
+        user_id = 0
+
+    response = client.get(f"{server_api}{API_V1_STR}/users/{user_id}")
+
+    user_from_req = response.json()
+
+    if status_code == HTTP_200_OK:
+        assert response.status_code == HTTP_200_OK
+
+        assert user_from_req.get("email") == user.email
+    else:
+        assert response.status_code == HTTP_404_NOT_FOUND

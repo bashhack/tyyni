@@ -25,3 +25,7 @@ def get_users(db_session: Session, *, skip=0, limit=100) -> List[Optional[User]]
 
 def get_user_by_email(db_session: Session, *, user_email: str) -> Optional[User]:
     return db_session.query(User).filter(User.email == user_email).first()
+
+
+def get_user_by_id(db_session: Session, *, user_id: int) -> Optional[User]:
+    return db_session.query(User).filter(User.id == user_id).first()

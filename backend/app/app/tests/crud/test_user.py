@@ -61,3 +61,10 @@ def test_update_user(create_user):
     assert user == original_user
     assert user.email == "changed@email.com"
     assert original_user.email == "changed@email.com"
+
+
+def test_authenticate_user(create_user):
+    user = create_user
+    authenticated_user = crud.user.authenticate(db_session, user_email=user.email)
+    assert authenticated_user
+    assert user.email == authenticated_user.email

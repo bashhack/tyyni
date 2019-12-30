@@ -48,3 +48,14 @@ def get_user_by_email(db_session: Session, *, user_email: str) -> Optional[User]
 
 def get_user_by_id(db_session: Session, *, user_id: int) -> Optional[User]:
     return db_session.query(User).filter(User.id == user_id).first()
+
+
+def authenticate(db_session: Session, *, user_email: str) -> Optional[User]:
+    user = get_user_by_email(db_session, user_email=user_email)
+
+    # TODO: Actually do some authentication here...need to check password
+
+    if not user:
+        return None
+
+    return user

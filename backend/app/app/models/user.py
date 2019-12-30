@@ -21,6 +21,10 @@ class User(UserBaseInDB):
     pass
 
 
+class UserUpdate(UserBaseInDB):
+    password: Optional[str] = None
+
+
 class UserCreate(UserBase):
     email: str
     password: str

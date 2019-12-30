@@ -21,6 +21,6 @@ class User(UserBaseInDB):
     pass
 
 
-class UserCreate(UserBaseInDB):
+class UserCreate(UserBase):
     email: str
     password: str

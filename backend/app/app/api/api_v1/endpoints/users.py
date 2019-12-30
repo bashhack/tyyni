@@ -9,7 +9,7 @@ from app.api.utils.error_handlers import (
     UserAlreadyExistsException,
     UserNotFoundException,
 )
-from app.models.user import User, UserCreate
+from app.models.user import User, UserCreate, UserUpdate
 from fastapi import APIRouter
 from fastapi.params import Depends
 from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
@@ -65,4 +65,22 @@ def get_user(*, db_session: Session = Depends(get_db), user_id: int):
     # TODO: Raise a 403 Unauthorized, here? Not everyone should have access...
     if not user:
         raise UserNotFoundException(user_id=user_id)
+    return user
+
+
+@router.put(
+    "/{user_id}",
+    response_model=User,
+    responses={HTTP_404_NOT_FOUND: {"model": ErrorMessage}},
+)
+def update_user(
+    *, db_session: Session = Depends(get_db), user_id: int, user_in: UserUpdate
+):
+    user_to_update = crud.user.get_user_by_id(db_session=db_session, user_id=user_id)
+    # TODO: Raise a 403 Unauthorized, here? Not everyone should have access...
+    if not user_to_update:
+        raise UserNotFoundException(user_id=user_id)
+    user = crud.user.update_user(
+        db_session, user_to_update=user_to_update, user_in=user_in
+    )
     return user

@@ -3,7 +3,7 @@ import pytest
 from app import crud
 from app.core.config import API_V1_STR
 from app.db.session import db_session
-from app.models.user import UserCreate
+from app.models.user import UserCreate, UserUpdate
 from app.tests.utils.utils import get_server_api, random_lower_string
 from starlette.status import (
     HTTP_200_OK,
@@ -116,6 +116,38 @@ def test_get_user(client, create_user, status_code):
         assert response.status_code == HTTP_200_OK
 
         assert response_content.get("email") == user.email
+    else:
+        assert response.status_code == HTTP_404_NOT_FOUND
+
+        assert (
+            response_content.get("message") == f"No user found with user_id: {user_id}"
+        )
+
+
+@pytest.mark.parametrize("status_code", [(HTTP_200_OK,), (HTTP_404_NOT_FOUND,)])
+def test_update_user(client, create_user, status_code):
+    server_api = get_server_api()
+    user = create_user()
+    original_user_email = user.email
+
+    if status_code == HTTP_200_OK:
+        user_id = user.id
+    else:
+        user_id = 0
+
+    user_in = UserUpdate(email="changed@email.com")
+
+    request = {"email": user_in.email, "password": "changed_password"}
+
+    response = client.put(f"{server_api}{API_V1_STR}/users/{user_id}", json=request)
+
+    response_content = response.json()
+
+    if status_code == HTTP_200_OK:
+        assert response.status_code == HTTP_200_OK
+        assert response_content.get("id") == user.id
+        assert original_user_email != "changed@email.com"
+        assert response_content.get("email") == "changed@email.com"
     else:
         assert response.status_code == HTTP_404_NOT_FOUND
 

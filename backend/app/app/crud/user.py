@@ -3,7 +3,8 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from app.db_models.user import User
-from app.models.user import UserCreate
+from app.models.user import UserCreate, UserUpdate
+from fastapi.encoders import jsonable_encoder
 
 
 def create_user(db_session: Session, *, user_in: UserCreate) -> User:
@@ -13,6 +14,24 @@ def create_user(db_session: Session, *, user_in: UserCreate) -> User:
         full_name=user_in.full_name,
         is_superuser=user_in.is_superuser,
     )
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    return user
+
+
+def update_user(
+    db_session: Session, *, user_to_update: User, user_in: UserUpdate
+) -> User:
+    user = user_to_update
+
+    user_data = jsonable_encoder(user)
+    update_data = user_in.dict(exclude_unset=True)
+
+    for field in user_data:
+        if field in update_data:
+            setattr(user, field, update_data[field])
+
     db_session.add(user)
     db_session.commit()
     db_session.refresh(user)

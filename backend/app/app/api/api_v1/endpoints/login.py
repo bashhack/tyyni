@@ -1,15 +1,18 @@
 from datetime import timedelta
 
-from app.core.jwt import create_access_token
-from fastapi.params import Depends
-from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from app import crud
 from app.api.utils.db import get_db
-from fastapi import APIRouter, HTTPException
-
+from app.api.utils.security import get_current_user
 from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES
+from app.core.jwt import create_access_token
+from app.db_models.user import User as DBUser
+from app.models.token import Token
+from app.models.user import User
+from fastapi import APIRouter, HTTPException
+from fastapi.params import Depends
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
 
@@ -17,7 +20,11 @@ router = APIRouter()
 # TODO: Keep an eye on this PR for authorization_code support: https://github.com/tiangolo/fastapi/pull/797/files
 
 
-def login_access_token(db_session: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
+@router.post("/login/access-token", response_model=Token, tags=["Login"])
+def login_access_token(
+    db_session: Session = Depends(get_db),
+    form_data: OAuth2PasswordRequestForm = Depends(),
+):
     """
 
     NOTE:
@@ -53,3 +60,11 @@ def login_access_token(db_session: Session = Depends(get_db), form_data: OAuth2P
         ),
         "token_type": "bearer",
     }
+
+
+@router.post("/login/test-token", tags=["Login"], response_model=User)
+def test_token(current_user: DBUser = Depends(get_current_user)):
+    """
+    Test access token
+    """
+    return current_user

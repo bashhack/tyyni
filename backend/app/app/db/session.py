@@ -1,15 +1,25 @@
+from decouple import config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from app.core.config import SQLALCHEMY_DATABASE_URI
 
-# Create a database connection
-engine = create_engine(SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
+TESTING = config("TESTING", cast=bool, default=False)
 
-# Create a registry of Session objects using a session factory instance via sessionmaker
-db_session = scoped_session(
-    sessionmaker(autocommit=False, autoflush=False, bind=engine)
-)
+if TESTING:
+    # Create a database connection
+    engine = create_engine(SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
+    # Create a registry of Session objects using a session factory instance via sessionmaker
+    db_session = scoped_session(
+        sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    )
+else:
+    # Create a database connection
+    engine = create_engine(SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
+    # Create a registry of Session objects using a session factory instance via sessionmaker
+    db_session = scoped_session(
+        sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    )
 
 # Create a session factory instance (for use in executing model queries, etc.)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

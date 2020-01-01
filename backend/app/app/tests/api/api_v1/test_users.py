@@ -84,6 +84,7 @@ def test_get_users(client, create_user):
     server_api = get_server_api()
     user = create_user()
     other_user = create_user()
+
     assert user.email != other_user.email
 
     response = client.get(f"{server_api}{API_V1_STR}/users/")
@@ -91,7 +92,6 @@ def test_get_users(client, create_user):
     response_content = response.json()
 
     assert response.status_code == HTTP_200_OK
-
     assert len(response_content) > 1
 
     for user in response_content:
@@ -114,11 +114,9 @@ def test_get_user(client, create_user, status_code):
 
     if status_code == HTTP_200_OK:
         assert response.status_code == HTTP_200_OK
-
         assert response_content.get("email") == user.email
     else:
         assert response.status_code == HTTP_404_NOT_FOUND
-
         assert (
             response_content.get("message") == f"No user found with user_id: {user_id}"
         )
@@ -150,7 +148,6 @@ def test_update_user(client, create_user, status_code):
         assert response_content.get("email") == "changed@email.com"
     else:
         assert response.status_code == HTTP_404_NOT_FOUND
-
         assert (
             response_content.get("message") == f"No user found with user_id: {user_id}"
         )

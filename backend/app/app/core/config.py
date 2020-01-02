@@ -23,3 +23,7 @@ FIRST_SUPERUSER_EMAIL = config("FIRST_SUPERUSER_EMAIL", default="")
 FIRST_SUPERUSER_PASSWORD = config("FIRST_SUPERUSER_PASSWORD", default="")
 
 SERVER_NAME = config("SERVER_NAME", default="")
+
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 8  # 60 minutes * 24 hours * 8 days = 8 days
+
+SECRET_KEY = config("SECRET_KEY", default="")

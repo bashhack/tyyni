@@ -9,6 +9,8 @@ from app.api.utils.error_handlers import (
     UserAlreadyExistsException,
     UserNotFoundException,
 )
+from app.api.utils.security import get_current_active_superuser
+from app.db_models.user import User as DBUser
 from app.models.user import User, UserCreate, UserUpdate
 from fastapi import APIRouter
 from fastapi.params import Depends
@@ -18,7 +20,12 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[User])
-def get_users(db_session: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+def get_users(
+    db_session: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 100,
+    authenticated_superuser: DBUser = Depends(get_current_active_superuser),
+):
     """ Get a list of users """
 
     users = crud.user.get_users(db_session, skip=skip, limit=limit)
@@ -31,7 +38,12 @@ def get_users(db_session: Session = Depends(get_db), skip: int = 0, limit: int =
     status_code=HTTP_201_CREATED,
     responses={HTTP_400_BAD_REQUEST: {"model": ErrorMessage}},
 )
-def create_user(*, db_session: Session = Depends(get_db), user_in: UserCreate):
+def create_user(
+    *,
+    db_session: Session = Depends(get_db),
+    user_in: UserCreate,
+    authenticated_superuser: DBUser = Depends(get_current_active_superuser),
+):
     """ Create a new user """
 
     user = crud.user.get_user_by_email(db_session=db_session, user_email=user_in.email)
@@ -74,10 +86,13 @@ def get_user(*, db_session: Session = Depends(get_db), user_id: int):
     responses={HTTP_404_NOT_FOUND: {"model": ErrorMessage}},
 )
 def update_user(
-    *, db_session: Session = Depends(get_db), user_id: int, user_in: UserUpdate
+    *,
+    db_session: Session = Depends(get_db),
+    user_id: int,
+    user_in: UserUpdate,
+    authenticated_superuser: DBUser = Depends(get_current_active_superuser),
 ):
     user_to_update = crud.user.get_user_by_id(db_session=db_session, user_id=user_id)
-    # TODO: Raise a 403 Unauthorized, here? Not everyone should have access...
     if not user_to_update:
         raise UserNotFoundException(user_id=user_id)
     user = crud.user.update_user(

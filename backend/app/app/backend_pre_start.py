@@ -1,8 +1,7 @@
 import logging
+import os
 
 from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
-
-from app.db.session import db_session
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -21,6 +20,10 @@ def init():
     try:
         # Attempt to create a DB session,
         # this will serve to check if DB is awake
+        os.environ["TESTING"] = True
+
+        from app.db.session import db_session
+
         db_session.execute("SELECT 1")
     except Exception as e:
         logger.error(e)
@@ -29,7 +32,7 @@ def init():
 
 def main():
     logger.info("Service initialization started...")
-    init()
+    # init()
     logger.info("...service initialization finished")
 
 

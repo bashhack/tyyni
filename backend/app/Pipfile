@@ -14,7 +14,6 @@ pyjwt = "==1.7.1"
 
 [dev-packages]
 pytest = "*"
-pytest-testmon = "==0.9.19"
 pytest-watch = "*"
 pytest-sugar = "*"
 pytest-cov = "*"

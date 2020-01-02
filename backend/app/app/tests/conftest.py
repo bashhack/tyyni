@@ -15,11 +15,11 @@ from app.core.config import (
 from app.db.session import db_session
 from app.main import app
 from app.models.user import UserCreate
-from app.tests.utils.utils import get_server_api, get_superuser_token_headers
+from app.tests.utils.utils import get_server_api
 from starlette.testclient import TestClient
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def create_test_database():
 
     url = SQLALCHEMY_DATABASE_URI
@@ -32,7 +32,7 @@ def create_test_database():
     drop_database(url)  # Drop the test database.
 
 
-@pytest.fixture()
+@pytest.fixture
 def client():
     """
     When using the 'client' fixture in test cases, we'll get full database
@@ -43,11 +43,14 @@ def client():
         response = client.get(url)
         assert response.status_code == 200
     """
+
+    # TODO: Set headers here, to avoid having to set auth headers everywhere?
+
     with TestClient(app) as client:
         yield client
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def create_superuser(create_test_database):
     superuser = crud.user.get_user_by_email(
         db_session, user_email=FIRST_SUPERUSER_EMAIL
@@ -65,17 +68,22 @@ def create_superuser(create_test_database):
         crud.user.create_user(db_session, user_in=user_in)
 
 
-@pytest.fixture(autouse=True)
-def authenticate_superuser(create_superuser):
+@pytest.fixture(scope="session", autouse=True)
+def superuser_token_headers(create_superuser):
     server_api = get_server_api()
     form_data = {
         "username": FIRST_SUPERUSER_EMAIL,
         "password": FIRST_SUPERUSER_PASSWORD,
     }
 
-    requests.post(f"{server_api}{API_V1_STR}/login/access-token", data=form_data)
+    response = requests.post(
+        f"{server_api}{API_V1_STR}/login/access-token", data=form_data
+    )
 
+    response_content = response.json()
 
-@pytest.fixture(scope="function")
-def superuser_token_headers():
-    return get_superuser_token_headers()
+    access_token = response_content.get("access_token")
+
+    headers = {"Authorization": f"Bearer {access_token}"}
+
+    return headers

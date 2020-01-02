@@ -59,24 +59,26 @@ def test_get_user_by_id(create_user):
 def test_update_user(create_user):
     original_user = create_user()
     original_email_for_user = original_user.email
-    user_in = UserUpdate(email="changed@email.com")
+    random_email = random_lower_string()
+    user_in = UserUpdate(email=random_email)
     user = crud.user.update_user(
         db_session, user_to_update=original_user, user_in=user_in
     )
-    assert original_email_for_user != "changed@email.com"
+    assert original_email_for_user != random_email
     assert user == original_user
-    assert user.email == "changed@email.com"
-    assert original_user.email == "changed@email.com"
+    assert user.email == random_email
+
+    assert original_user.email == random_email
 
 
-# def test_authenticated_user(create_user):
-#     user = create_user()
-#     authenticated_user = crud.user.authenticate(db_session, user_email=user.email)
-#     assert authenticated_user
-#     assert user.email == authenticated_user.email
-#
-#
-# def test_non_authenticated_user(user_setup):
-#     email, password = user_setup()
-#     authenticated_user = crud.user.authenticate(db_session, user_email=email)
-#     assert not authenticated_user
+def test_authenticated_user(create_user):
+    user = create_user()
+    authenticated_user = crud.user.authenticate(db_session, user_email=user.email)
+    assert authenticated_user
+    assert user.email == authenticated_user.email
+
+
+def test_non_authenticated_user(user_setup):
+    email, password = user_setup()
+    authenticated_user = crud.user.authenticate(db_session, user_email=email)
+    assert not authenticated_user

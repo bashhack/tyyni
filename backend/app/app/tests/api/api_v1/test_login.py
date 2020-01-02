@@ -23,7 +23,6 @@ def test_get_access_token():
 
 def test_use_access_token(superuser_token_headers):
     server_api = get_server_api()
-
     response = requests.post(
         f"{server_api}{API_V1_STR}/login/test-token", headers=superuser_token_headers
     )

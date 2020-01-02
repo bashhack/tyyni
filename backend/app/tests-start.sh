@@ -6,6 +6,6 @@ export TESTING=True
 
 
 # NOTE: Using Internal Field Separator (IFS) expansion syntax...
-ptw --runner "pytest --testmon $* /app/app/tests"
+ptw --runner "pytest -s $* /app/app/tests"
 
 #pytest "$*" /app/app/tests

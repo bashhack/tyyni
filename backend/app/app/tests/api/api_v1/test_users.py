@@ -151,7 +151,6 @@ def test_get_user(client, create_user, superuser_token_headers):
     response_content = response.json()
 
     assert response.status_code == HTTP_200_OK
-
     assert response_content.get("email") == user.email
 
 
@@ -167,7 +166,6 @@ def test_get_user_returns_404_if_user_not_found(client, superuser_token_headers)
     response_content = response.json()
 
     assert response.status_code == HTTP_404_NOT_FOUND
-
     assert response_content.get("message") == f"No user found with user_id: {user_id}"
 
 
@@ -212,7 +210,8 @@ def test_update_user(client, create_user, superuser_token_headers):
     user = create_user()
     original_user_email = user.email
 
-    user_in = UserUpdate(email="changed@email.com")
+    random_email = random_lower_string()
+    user_in = UserUpdate(email=random_email)
 
     request = {"email": user_in.email, "password": "changed_password"}
 
@@ -226,16 +225,17 @@ def test_update_user(client, create_user, superuser_token_headers):
 
     assert response.status_code == HTTP_200_OK
     assert response_content.get("id") == user.id
-    assert original_user_email != "changed@email.com"
-    assert response_content.get("email") == "changed@email.com"
+    assert original_user_email != random_email
+    assert response_content.get("email") == random_email
 
 
 def test_update_user_returns_404_if_user_not_found(client, superuser_token_headers):
     server_api = get_server_api()
-
     user_id = 0
 
-    user_in = UserUpdate(email="changed@email.com")
+    random_email = random_lower_string()
+
+    user_in = UserUpdate(email=random_email)
 
     request = {"email": user_in.email, "password": "changed_password"}
 
@@ -248,5 +248,4 @@ def test_update_user_returns_404_if_user_not_found(client, superuser_token_heade
     response_content = response.json()
 
     assert response.status_code == HTTP_404_NOT_FOUND
-
     assert response_content.get("message") == f"No user found with user_id: {user_id}"

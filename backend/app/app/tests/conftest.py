@@ -1,5 +1,6 @@
 import pytest
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy_utils import create_database, database_exists, drop_database
 
 import requests
@@ -12,7 +13,7 @@ from app.core.config import (
     FIRST_SUPERUSER_PASSWORD,
     SQLALCHEMY_DATABASE_URI,
 )
-from app.db.session import db_session
+from app.db.session import db_session, engine
 from app.main import app
 from app.models.user import UserCreate
 from app.tests.utils.utils import get_server_api
@@ -23,6 +24,10 @@ from starlette.testclient import TestClient
 def create_test_database():
 
     url = SQLALCHEMY_DATABASE_URI
+
+    if database_exists(url):
+        drop_database(url)
+
     create_engine(url)
     assert not database_exists(url), "Test database already exists. Aborting tests."
     create_database(url)  # Create the test database.
@@ -31,6 +36,37 @@ def create_test_database():
     yield  # Run the tests.
     drop_database(url)  # Drop the test database.
 
+
+# @pytest.fixture
+# def db_session(create_test_database):
+#     conn = engine.connect()
+#     txn = conn.begin()
+#
+#     db_session = scoped_session(
+#         sessionmaker(binds={}, bind=conn)
+#     )
+#
+#     # establish  a SAVEPOINT just before beginning the test
+#     # (http://docs.sqlalchemy.org/en/latest/orm/session_transaction.html#using-savepoint)
+#     db_session.begin_nested()
+#
+#     @event.listens_for(db_session(), 'after_transaction_end')
+#     def restart_savepoint(sess2, trans):
+#         # Detecting whether this is indeed the nested transaction of the test
+#         if trans.nested and not trans._parent.nested:
+#             # The test should have normally called session.commit(),
+#             # but to be safe we explicitly expire the session
+#             sess2.expire_all()
+#             db_session.begin_nested()
+#
+#
+#     yield db_session
+#
+#     # Cleanup
+#     db_session.remove()
+#     # This instruction rollsback any commit that were executed in the tests.
+#     txn.rollback()
+#     conn.close()
 
 @pytest.fixture
 def client():
@@ -50,7 +86,7 @@ def client():
         yield client
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture
 def create_superuser(create_test_database):
     superuser = crud.user.get_user_by_email(
         db_session, user_email=FIRST_SUPERUSER_EMAIL
@@ -68,7 +104,7 @@ def create_superuser(create_test_database):
         crud.user.create_user(db_session, user_in=user_in)
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture
 def superuser_token_headers(create_superuser):
     server_api = get_server_api()
     form_data = {
